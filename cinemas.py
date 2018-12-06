@@ -42,14 +42,9 @@ def make_get_url(url, params):
 def fetch_movie_info_multiple(movie_titles):
     urls = []
     for title in movie_titles:
-        urls.append(
-            make_get_url(
-                'https://www.kinopoisk.ru/index.php',
-                {
-                    'kp_query': title
-                }
-            )
-        )
+        urls.append(make_get_url(
+            'https://www.kinopoisk.ru/index.php', {'kp_query': title}
+        ))
     rs = (grequests.get(u) for u in urls)
 
     raw_htmls_list = list(map(
