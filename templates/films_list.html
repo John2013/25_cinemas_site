@@ -7,7 +7,6 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Что в кино">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
 
     <title>Что в кино</title>
 
@@ -27,7 +26,24 @@
     </nav>
 
     <div class="container">
-      <p>There Will Be Films</p>
+      {% if movies %}
+        <table>
+          <tr>
+            <th>Название</th>
+            <th>Рейтинг</th>
+            <th>Количество голосов</th>
+          </tr>
+          {% for movie in movies %}
+            <tr>
+              <td>{{ movie['title'] }}</td>
+              <td>{{ movie['rating'] }}</td>
+              <td>{{ movie['votes_cnt'] }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p>Что-то пошло не так</p>
+      {% endif %}
     </div><!-- /.container -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
