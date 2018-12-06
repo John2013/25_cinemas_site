@@ -85,8 +85,12 @@ def parse_movie_info_multiple(titles_htmls_tuples_list):
     return movies
 
 
+def sort_movies(movies, by='rating'):
+    return sorted(movies, key=itemgetter(by), reverse=True)
+
+
 def output_movies_to_console(movies):
-    movies = sorted(movies, key=itemgetter('rating'), reverse=True)[:10]
+    movies = sort_movies(movies, 'rating')[:10]
     for movie in movies:
         print('{title:<50} | {rating} ({votes_cnt})'.format(
             title=movie['title'][:50],
@@ -108,11 +112,12 @@ def get_top_10():
     afisha_html = fetch_afisha_page()
     movie_titles = parse_afisha_list(afisha_html)
     movie_titles_htmls = fetch_movie_info_multiple(movie_titles)
-    return parse_movie_info_multiple(movie_titles_htmls)
+    movies = parse_movie_info_multiple(movie_titles_htmls)
+    return sort_movies(movies)[:10]
 
 
-def cached_top_10():
-    return cache_get_or_set('top10', get_top_10)
+def cached_top_10(timeout=86400):
+    return cache_get_or_set('top10', get_top_10, timeout)
 
 
 if __name__ == '__main__':
