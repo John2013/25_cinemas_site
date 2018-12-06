@@ -1,10 +1,11 @@
 import re
 from operator import itemgetter
+from os.path import abspath
 from urllib.parse import quote
-
 import grequests
 import gevent.monkey
 import requests
+from werkzeug.contrib.cache import FileSystemCache
 
 from bs4 import BeautifulSoup
 
@@ -94,6 +95,15 @@ def output_movies_to_console(movies):
         ))
 
 
+def cache_get_or_set(name, function, timeout=86400):
+    cache = FileSystemCache(cache_dir=abspath('tmp'))
+    result = cache.get(name)
+    if result is None:
+        result = function()
+        cache.set(name, result, timeout=timeout)
+    return result
+
+
 def get_top_10():
     afisha_html = fetch_afisha_page()
     movie_titles = parse_afisha_list(afisha_html)
@@ -101,7 +111,14 @@ def get_top_10():
     return parse_movie_info_multiple(movie_titles_htmls)
 
 
-if __name__ == '__main__':
-    movies = get_top_10()
+def cached_top_10():
+    return cache_get_or_set('top10', get_top_10)
 
+
+if __name__ == '__main__':
+    movies = cached_top_10()
+    output_movies_to_console(movies)
+    movies = cached_top_10()
+    output_movies_to_console(movies)
+    movies = cached_top_10()
     output_movies_to_console(movies)
