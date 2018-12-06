@@ -118,7 +118,3 @@ def cached_top_10():
 if __name__ == '__main__':
     movies = cached_top_10()
     output_movies_to_console(movies)
-    movies = cached_top_10()
-    output_movies_to_console(movies)
-    movies = cached_top_10()
-    output_movies_to_console(movies)

@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def films_list():
-    movies = cinemas.get_top_10()
+    movies = cinemas.cached_top_10()
     return render_template(
         'films_list.html',
         movies=movies
