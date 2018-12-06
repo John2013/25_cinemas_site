@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from werkzeug.contrib.fixers import ProxyFix
 import cinemas
 app = Flask(__name__)
 
@@ -12,5 +13,6 @@ def films_list():
     )
 
 
+app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == "__main__":
     app.run()
