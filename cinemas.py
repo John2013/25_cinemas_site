@@ -99,13 +99,13 @@ def output_movies_to_console(movies):
         ))
 
 
-def cache_get_or_set(name, function, timeout=3600):
+def cache_get_or_set(cache_name, function, timeout=3600):
     cache = FileSystemCache(cache_dir=abspath('tmp'))
-    result = cache.get(name)
-    if result is None:
-        result = function()
-        cache.set(name, result, timeout=timeout)
-    return result
+    cache_data = cache.get(cache_name)
+    if cache_data is None:
+        cache_data = function()
+        cache.set(cache_name, cache_data, timeout=timeout)
+    return cache_data
 
 
 def get_top_10():
