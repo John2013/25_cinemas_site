@@ -3,7 +3,6 @@ from operator import itemgetter
 from urllib.parse import quote
 
 import grequests
-
 import gevent.monkey
 import requests
 
@@ -88,8 +87,8 @@ def parse_movie_info_multiple(titles_htmls_tuples_list):
 def output_movies_to_console(movies):
     movies = sorted(movies, key=itemgetter('rating'), reverse=True)[:10]
     for movie in movies:
-        print('{title:<30} | {rating} ({votes_cnt})'.format(
-            title=movie['title'],
+        print('{title:<50} | {rating} ({votes_cnt})'.format(
+            title=movie['title'][:50],
             rating=movie['rating'],
             votes_cnt=movie['votes_cnt']
         ))
