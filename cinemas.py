@@ -99,7 +99,7 @@ def output_movies_to_console(movies):
         ))
 
 
-def cache_get_or_set(name, function, timeout=86400):
+def cache_get_or_set(name, function, timeout=3600):
     cache = FileSystemCache(cache_dir=abspath('tmp'))
     result = cache.get(name)
     if result is None:
@@ -116,7 +116,7 @@ def get_top_10():
     return sort_movies(movies)[:10]
 
 
-def cached_top_10(timeout=86400):
+def cached_top_10(timeout=3600):
     return cache_get_or_set('top10', get_top_10, timeout)
 
 
