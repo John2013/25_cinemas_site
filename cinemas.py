@@ -29,7 +29,7 @@ def parse_afisha_list(raw_html):
 
 
 def make_get_url(url, params):
-    if len(params) > 0:
+    if params:
         text_params_list = []
         for param, value in params.items():
             text_params_list.append("{}={}".format(quote(param), quote(value)))
