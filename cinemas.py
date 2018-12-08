@@ -1,7 +1,7 @@
 import re
 from operator import itemgetter
 from os.path import abspath
-from urllib.parse import quote
+from urllib.parse import urlencode
 import grequests
 import gevent.monkey
 import requests
@@ -29,14 +29,9 @@ def parse_afisha_list(raw_html):
     )
 
 
-def make_get_url(url, params):
+def make_get_url(url, params=None):
     if params:
-        text_params_list = []
-        for param, value in params.items():
-            text_params_list.append("{}={}".format(quote(param), quote(value)))
-
-        params_text = "&".join(text_params_list)
-        return "{}?{}".format(url, params_text)
+        return "{}?{}".format(url, urlencode(params))
     return url
 
 
