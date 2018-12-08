@@ -31,13 +31,19 @@
   {% if movies %}
     <table class="table">
       <tr>
+        <th>Постер</th>
         <th>Название</th>
         <th>Рейтинг</th>
         <th>Количество голосов</th>
       </tr>
       {% for movie in movies %}
         <tr>
-          <td>{{ movie['title'] }}</td>
+          <td>
+            <a href="{{ movie['url'] }}" target="_blank">
+              <img src="{{ movie['poster'] }}" alt="{{ movie['title'] }}">
+            </a>
+          </td>
+          <td><a href="{{ movie['url'] }}" target="_blank">{{ movie['title'] }}</a></td>
           <td>{{ movie['rating'] }}</td>
           <td>{{ movie['votes_cnt'] }}</td>
         </tr>
