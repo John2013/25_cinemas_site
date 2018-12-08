@@ -9,9 +9,10 @@ from werkzeug.contrib.cache import FileSystemCache
 
 from bs4 import BeautifulSoup
 
+gevent.monkey.patch_all()
+
 
 def fetch_afisha_page():
-    gevent.monkey.patch_all()
     return requests.get(
         'https://www.afisha.ru/cherepovec/schedule_cinema/'
     ).content
