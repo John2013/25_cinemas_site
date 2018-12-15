@@ -1,0 +1,53 @@
+body{
+  display: flex; flex-direction: column; min-height: 100vh
+}
+
+body > footer{
+   margin-top: auto
+}
+
+article{
+  position: relative;
+  background-color: black;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 500px;
+  border: 2px solid white;
+}
+
+article > a{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+article .article-footer{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,.3);
+  color: #ffffff;
+  padding: 0 5px;
+  text-align: center;
+  transition: color .3s ease;
+}
+
+article:hover .article-footer{
+  color: #337ab7;
+}
+
+@media (min-width: 768px) {
+  article{
+    height: 390px;
+  }
+}
+
+@media (min-width: 992px) {
+  article{
+    height: 380px;
+  }
+}
