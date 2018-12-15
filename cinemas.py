@@ -3,13 +3,10 @@ from operator import itemgetter
 from os.path import abspath
 from urllib.parse import urlencode
 import grequests
-import gevent.monkey
 import requests
 from werkzeug.contrib.cache import FileSystemCache
 
 from bs4 import BeautifulSoup
-
-gevent.monkey.patch_all()
 
 
 def fetch_afisha_page():
@@ -52,7 +49,7 @@ def fetch_movie_info_multiple(movie_titles):
 
 
 def get_poster_by_id(movie_id):
-    return "https://www.kinopoisk.ru/images/sm_film/{}.jpg".format(movie_id)
+    return "https://www.kinopoisk.ru/images/film_big/{}.jpg".format(movie_id)
 
 
 def get_url_by_id(movie_id):
@@ -64,6 +61,13 @@ def parse_movie_from_self_page(soup, title):
     rating_tag = soup.select_one('span.rating_ball')
     count_tag = soup.select_one('span.ratingCount')
 
+    button_with_id_tag = soup.select_one('#movie-trailer-button')
+    if button_with_id_tag is not None:
+        movie_id = int(button_with_id_tag['data-film-id'])
+
+    else:
+        movie_id = 0
+
     rating = float(rating_tag.string) if rating_tag else none_int
     votes_cnt = int(count_tag.string) if count_tag else none_int
 
@@ -71,8 +75,8 @@ def parse_movie_from_self_page(soup, title):
         "title": title,
         "rating": rating,
         "votes_cnt": votes_cnt,
-        "poster": '',
-        "url": ''
+        "poster": get_poster_by_id(movie_id),
+        "url": get_url_by_id(movie_id)
     }
 
 
@@ -81,11 +85,11 @@ def parse_movie_info_multiple(titles_htmls_tuples_list):
     for title, raw_html in titles_htmls_tuples_list:
         soup = BeautifulSoup(raw_html, features="html.parser")
         element_tag = soup.select_one('div.element.most_wanted')
-        rating_tag = element_tag.select_one('div.rating')
-        if rating_tag is None:
+        if element_tag is None:
             movie = parse_movie_from_self_page(soup, title)
             movies.append(movie)
             continue
+        rating_tag = element_tag.select_one('div.rating')
 
         title_tag = element_tag.select_one('a.js-serp-metrika')
         movie_id = title_tag['data-id']

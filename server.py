@@ -1,7 +1,11 @@
 from flask import Flask, render_template
 from werkzeug.contrib.fixers import ProxyFix
 import cinemas
+import gevent.monkey
 app = Flask(__name__)
+
+
+gevent.monkey.patch_all()
 
 
 @app.route('/')
